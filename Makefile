@@ -12,7 +12,11 @@ clean:
 corpora:	$(corpora)
 
 $(corpora):
+	export startp="START\sOF\sTHE\sPROJECT\sGUTENBERG\sEBOOK" && \
+	export endp="END\sOF\sTHE\sPROJECT\sGUTENBERG\sEBOOK" && \
 	echo > corpora/$@ && \
 	find data_sources/$@ -type f | \
-	xargs -i bash -c "sed -e '/START\sOF\sTHE\sPROJECT\sGUTENBERG\sEBOOK/,/END\sOF\sTHE\sPROJECT\sGUTENBERG\sEBOOK/p' -n {} | tail -n+2 | head -n-1 >> corpora/$@"
+	xargs -i bash -c "sed -e '/$$startp/,/$$endp/p' -n {} | tail -n+2 | head -n-1 | awk NF >> corpora/$@"
 
+download:
+	python utils/download.py

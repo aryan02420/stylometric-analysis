@@ -20,3 +20,6 @@ $(corpora):
 
 download:
 	python utils/download.py
+
+pycache:
+	echo y | rm -rf lib/__pycache__/*

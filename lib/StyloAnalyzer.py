@@ -196,3 +196,16 @@ class StyloAnalyzer(object):
     @functools.cached_property
     def bigram_top(self):
         return self.bigram_freq.most_common()
+
+    @functools.cached_property
+    def trigrams(self):
+        return nltk.trigrams(self.tokens)
+
+
+    @functools.cached_property
+    def trigram_freq(self):
+        return nltk.FreqDist(nltk.trigrams(self.tokens))
+    
+    @functools.cached_property
+    def trigram_top(self):
+        return self.trigram_freq.most_common()

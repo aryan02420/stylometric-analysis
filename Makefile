@@ -17,16 +17,16 @@ corpora:	$(addprefix c_,$(corpora))
 corpora_split:	$(addprefix s_,$(corpora))
 
 c_%:
-	export startp="\*\*\*\sSTART\sOF"
-	export endp="\*\*\*\sEND\sOF"
+	export startp="\*\*\*\s*START\sOF"
+	export endp="\*\*\*\s*END\sOF"
 	echo > corpora/$*
 	find data_sources/$* -type f | \
 	xargs -i bash -c "sed -e '/$$startp/,/$$endp/p' -n {} | tail -n+2 | head -n-1 >> corpora/$*"
 
 s_%:
 	mkdir corpora_split/$* | true
-	export startp="\*\*\*\sSTART\sOF"
-	export endp="\*\*\*\sEND\sOF"
+	export startp="\*\*\*\s*START\sOF"
+	export endp="\*\*\*\s*END\sOF"
 	ls data_sources/$* | xargs -i -n 1 bash -c "sed -e '/$$startp/,/$$endp/p' -n data_sources/$*/{} | tail -n+2 | head -n-1 | split -d -a 4 -l 1000 - corpora_split/$*/{}."
 
 download:

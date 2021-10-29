@@ -1,6 +1,7 @@
 import nltk
 import numpy as np
 import functools
+import json
 
 common_words = ['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make',
                 'can', 'like', 'time', 'no', 'just', 'him', 'know', 'take', 'people', 'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than', 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us']
@@ -36,6 +37,26 @@ class StyloAnalyzer(object):
             " ".join(["-".join(tri) for (tri, count) in self.trigram_top[:15]])
         ]
         return "%s\t%s\t%s\t%s" % (basic_info, common_words_info, common_punct_info, "\t".join(top_words))
+
+    def toJSON(self):
+        return {
+            'corpus': self.corpus,
+            'num_words': self.num_words,
+            'num_unique_words': self.num_unique_words,
+            'type_token_ratio': self.type_token_ratio,
+            'word_len_freq': self.word_len_freq,
+            'av_word_len': self.av_word_len,
+            'common_words': { word: count for (word, count) in self.common_words_per_1000 },
+            'common_puncts': { punct: count for (punct, count) in self.common_puncts_per_1000 },
+            'num_sents': self.num_sentences,
+            'sent_len_freq': self.sent_len_freq,
+            'av_words_per_sent': self.av_words_per_sent,
+            'tags': self.tag_freq.most_common()[:15],
+            'num_para': self.num_paragraphs,
+            'av_words_per_para': self.av_words_per_para,
+            'bigrams': self.bigram_top[:15],
+            'trigrams': self.trigram_top[:15]
+        }
 
     ###### lexical analysis ######
 
@@ -97,7 +118,7 @@ class StyloAnalyzer(object):
     @functools.cached_property
     def word_len_freq(self):
         '''freq dist of length of word tokens'''
-        return nltk.probability.FreqDist(self.word_len)    
+        return nltk.probability.FreqDist(self.word_len)
 
     @functools.cached_property
     def av_word_len(self):

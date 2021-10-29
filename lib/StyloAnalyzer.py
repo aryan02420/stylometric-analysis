@@ -209,7 +209,7 @@ class StyloAnalyzer(object):
 
     @functools.cached_property
     def bigrams(self):
-        return nltk.bigrams(self.text)
+        return nltk.bigrams(self.word_text)
 
     @functools.cached_property
     def bigram_cfd(self):
@@ -225,11 +225,11 @@ class StyloAnalyzer(object):
 
     @functools.cached_property
     def trigrams(self):
-        return nltk.trigrams(self.tokens)
+        return nltk.trigrams(self.word_text)
 
     @functools.cached_property
     def trigram_freq(self):
-        return nltk.probability.FreqDist(nltk.trigrams(self.tokens))
+        return nltk.probability.FreqDist(self.trigrams)
 
     @functools.cached_property
     def trigram_top(self):

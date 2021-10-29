@@ -27,9 +27,15 @@ class StyloAnalyzer(object):
             [str(count) for (word, count) in self.common_words_per_1000])
         common_punct_info = "\t".join(
             [str(count) for (token, count) in self.common_puncts_per_1000])
-        top_non_func_words = " ".join(
-            [word for (word, count) in self.non_func_words_freq.most_common()][:15])
-        return "%s\t%s\t%s\t%s" % (basic_info, common_words_info, common_punct_info, top_non_func_words)
+        top_words = [
+            " ".join([word for (word, count)
+                     in self.non_func_words_freq.most_common()[:15]]),
+            " ".join([word for (word, count)
+                     in self.tag_freq.most_common()[:15]]),
+            " ".join(["-".join(bi) for (bi, count) in self.bigram_top[:15]]),
+            " ".join(["-".join(tri) for (tri, count) in self.trigram_top[:15]])
+        ]
+        return "%s\t%s\t%s\t%s" % (basic_info, common_words_info, common_punct_info, "\t".join(top_words))
 
     ###### lexical analysis ######
 
@@ -201,11 +207,10 @@ class StyloAnalyzer(object):
     def trigrams(self):
         return nltk.trigrams(self.tokens)
 
-
     @functools.cached_property
     def trigram_freq(self):
         return nltk.FreqDist(nltk.trigrams(self.tokens))
-    
+
     @functools.cached_property
     def trigram_top(self):
         return self.trigram_freq.most_common()

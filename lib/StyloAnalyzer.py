@@ -90,6 +90,16 @@ class StyloAnalyzer(object):
         return nltk.probability.FreqDist(self.word_text)
 
     @functools.cached_property
+    def word_len(self):
+        '''length of word tokens'''
+        return [len(word) for word in self.words]
+
+    @functools.cached_property
+    def word_len_freq(self):
+        '''freq dist of length of word tokens'''
+        return nltk.probability.FreqDist(self.word_len)    
+
+    @functools.cached_property
     def av_word_len(self):
         '''average length of word'''
         return np.mean([len(word) for word in self.words])
@@ -121,6 +131,16 @@ class StyloAnalyzer(object):
     def num_sentences(self):
         ''''''
         return len(self.sentences)
+
+    @functools.cached_property
+    def sent_len(self):
+        '''length of sentences'''
+        return [len(sent) for sent in self.sentences]
+
+    @functools.cached_property
+    def sent_len_freq(self):
+        '''freq dist of length of sentences'''
+        return nltk.probability.FreqDist(self.sent_len)
 
     @functools.cached_property
     def av_words_per_sent(self):
@@ -209,7 +229,7 @@ class StyloAnalyzer(object):
 
     @functools.cached_property
     def trigram_freq(self):
-        return nltk.FreqDist(nltk.trigrams(self.tokens))
+        return nltk.probability.FreqDist(nltk.trigrams(self.tokens))
 
     @functools.cached_property
     def trigram_top(self):

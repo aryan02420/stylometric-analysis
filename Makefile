@@ -27,7 +27,7 @@ s_%:
 	mkdir corpora_split/$* | true
 	export startp="\*\*\*\s*START\sOF"
 	export endp="\*\*\*\s*END\sOF"
-	ls data_sources/$* | xargs -i -n 1 bash -c "sed -e '/$$startp/,/$$endp/p' -n data_sources/$*/{} | tail -n+2 | head -n-1 | split -d -a 4 -l 1000 - corpora_split/$*/{}."
+	ls data_sources/$* | xargs -i -n 1 bash -c "sed -e '/$$startp/,/$$endp/p' -n data_sources/$*/{} | tail -n+2 | head -n-1 | split -d -a 4 -l 700 - corpora_split/$*/{}."
 
 download:
 	python utils/download.py

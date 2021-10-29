@@ -18,7 +18,7 @@ class StyloAnalyzer(object):
 
     @classmethod
     def csv_header(cls):
-        return "corpus\ttype token ratio\twords\tunique words\tsentences\tparagraphs\tav word len\tav non func word len\tav words per sent\tav words per para\t" + "\t".join(common_words) + "\t" + "\t".join(punct) + "\ttop"
+        return "corpus\ttype token ratio\twords\tunique words\tsentences\tparagraphs\tav word len\tav non func word len\tav words per sent\tav words per para\t" + "\t".join(common_words) + "\t" + "\t".join(punct) + "\tnon func words\ttags\tbigram\ttrigram"
 
     def __str__(self):
         basic_info = "%s\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f" % (self.corpus, self.type_token_ratio, self.num_words, self.num_unique_words,

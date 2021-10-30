@@ -1,3 +1,4 @@
 data_sources/** linguist-vendored
 corpora/** linguist-generated
 corpora_split/** linguist-generated
+output/** linguist-generated

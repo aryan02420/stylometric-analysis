@@ -33,7 +33,7 @@ download:
 	python utils/download.py
 
 pycache:
-	echo y | rm -rf lib/__pycache__/*
+	echo y | rm -rf lib/__pycache__/
 
 prefix_%:
 	echo $*

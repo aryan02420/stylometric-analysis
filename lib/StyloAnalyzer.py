@@ -1,12 +1,13 @@
 import nltk
 import numpy as np
 import functools
-from .constants import *
+from constants import *
+from Syntactic import Syntactic
 
 stop_words = nltk.corpus.stopwords.words('english')
 
 
-class StyloAnalyzer(object):
+class StyloAnalyzer(Syntactic):
     def __init__(self, corpus: str, raw: str) -> None:
         super().__init__()
         self.raw = raw.lower()

@@ -1,0 +1,2 @@
+class Basic(object):
+  pass

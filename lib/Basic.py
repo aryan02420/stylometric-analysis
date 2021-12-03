@@ -1,7 +1,7 @@
 import nltk
 import numpy as np
 import functools
-from constants import *
+from .constants import *
 
 stop_words = nltk.corpus.stopwords.words('english')
 

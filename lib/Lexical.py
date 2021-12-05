@@ -51,11 +51,11 @@ class Lexical(Basic):
 
     @ functools.cached_property
     def common_words_prob(self):
-        return [(word, self.word_prob_dict.get(word, 0)) for word in common_words]
+        return [(word, self.word_prob_dict.get(word, 0)/self.num_words) for word in common_words]
 
     @ functools.cached_property
     def common_puncts_prob(self):
-        return [(word, self.token_prob_dict.get(word, 0)) for word in punct]
+        return [(word, self.token_prob_dict.get(word, 0)/self.num_tokens) for word in punct]
 
 
     @ functools.cached_property
@@ -69,6 +69,10 @@ class Lexical(Basic):
     @ functools.cached_property
     def word_len_prob(self):
         return [(len, freq/self.num_words) for (len, freq) in self.word_len_freq]
+
+    @ functools.cached_property
+    def word_len_prob_dict(self):
+        return {word: freq for (word, freq) in self.word_len_prob}
 
     @ functools.cached_property
     def av_word_len(self):
@@ -103,6 +107,10 @@ class Lexical(Basic):
     @ functools.cached_property
     def filtered_word_len_prob(self):
         return [(len, freq/self.num_filtered_words) for (len, freq) in self.filtered_word_len_freq]
+
+    @ functools.cached_property
+    def filtered_word_len_prob_dict(self):
+        return {word: freq for (word, freq) in self.filtered_word_len_prob}
 
     @ functools.cached_property
     def av_filtered_word_len(self):

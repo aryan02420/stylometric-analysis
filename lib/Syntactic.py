@@ -8,10 +8,10 @@ from .Lexical import Lexical
 stop_words = nltk.corpus.stopwords.words('english')
 ignore_words = set(stop_words + common_words)
 
+
 class Syntactic(Lexical):
     def __init__(self, label: str, text: str) -> None:
         super().__init__(label, text)
-
 
     @functools.cached_property
     def tagged_tokens(self):
@@ -29,6 +29,9 @@ class Syntactic(Lexical):
     def tag_prob(self):
         return [(tag, freq/len(self.tags)) for (tag, freq) in self.tag_freq]
 
+    @functools.cached_property
+    def tag_prob_dict(self):
+        return {word: freq for (word, freq) in self.tag_prob}
 
     @functools.cached_property
     def bigrams(self):
@@ -43,7 +46,6 @@ class Syntactic(Lexical):
     def bigram_prob(self):
         return [(big, freq/len(self.bigrams)) for (big, freq) in self.bigram_freq]
 
-
     @functools.cached_property
     def trigrams(self):
         tig = nltk.trigrams(self.words)
@@ -55,4 +57,4 @@ class Syntactic(Lexical):
 
     @functools.cached_property
     def trigram_prob(self):
-        return [(tig, freq/len(self.trigrams)) for (tig, freq) in self.trigrams]
+        return [(tig, freq/len(self.trigrams)) for (tig, freq) in self.trigram_freq]

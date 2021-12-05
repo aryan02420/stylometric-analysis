@@ -9,6 +9,7 @@ class Basic(object):
         self.raw = text.lower()
         self.label = label
 
+
     @functools.cached_property
     def tokens(self):
         return nltk.word_tokenize(self.raw)

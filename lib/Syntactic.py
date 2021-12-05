@@ -6,7 +6,7 @@ from .Lexical import Lexical
 
 
 stop_words = nltk.corpus.stopwords.words('english')
-ignore_words = set(list(stop_words).append(common_words))
+ignore_words = set(stop_words + common_words)
 
 class Syntactic(Lexical):
     def __init__(self, label: str, text: str) -> None:
@@ -15,11 +15,11 @@ class Syntactic(Lexical):
 
     @functools.cached_property
     def tagged_tokens(self):
-        return nltk.pos_tag(self.tokens)
+        return [(token, tag) for (token, tag) in nltk.pos_tag(self.tokens) if token in self.unique_words]
 
     @functools.cached_property
     def tags(self):
-        return [tag for (token, tag) in self.tagged_tokens if token in self.unique_words]
+        return [tag for (token, tag) in self.tagged_tokens]
 
     @functools.cached_property
     def tag_freq(self):
@@ -41,7 +41,7 @@ class Syntactic(Lexical):
 
     @functools.cached_property
     def bigram_prob(self):
-        return [(big, freq/len(self.bigrams)) for (big, freq) in self.bigrams]
+        return [(big, freq/len(self.bigrams)) for (big, freq) in self.bigram_freq]
 
 
     @functools.cached_property

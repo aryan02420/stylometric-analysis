@@ -51,11 +51,11 @@ class Lexical(Basic):
 
     @ functools.cached_property
     def common_words_prob(self):
-        return [(word, self.word_prob_dict[word]) for word in common_words]
+        return [(word, self.word_prob_dict.get(word, 0)) for word in common_words]
 
     @ functools.cached_property
     def common_puncts_prob(self):
-        return [(word, self.token_prob_dict[word]) for word in punct]
+        return [(word, self.token_prob_dict.get(word, 0)) for word in punct]
 
 
     @ functools.cached_property
@@ -112,7 +112,7 @@ class Lexical(Basic):
 
     @ functools.cached_property
     def sentences(self):
-        return nltk.sent_tokenize(self.raw)
+        return [sent.rstrip() for sent in nltk.sent_tokenize(self.raw)]
 
     @ functools.cached_property
     def num_sentences(self):

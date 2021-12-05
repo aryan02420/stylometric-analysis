@@ -4,14 +4,11 @@ import functools
 from .constants import *
 from .Lexical import Lexical
 
-
-stop_words = nltk.corpus.stopwords.words('english')
-ignore_words = set(stop_words + common_words)
-
-
 class Syntactic(Lexical):
     def __init__(self, label: str, text: str) -> None:
         super().__init__(label, text)
+
+    ###### tags
 
     @functools.cached_property
     def tagged_tokens(self):
@@ -33,6 +30,8 @@ class Syntactic(Lexical):
     def tag_prob_dict(self):
         return {word: freq for (word, freq) in self.tag_prob}
 
+    ###### bigrams
+
     @functools.cached_property
     def bigrams(self):
         big = nltk.bigrams(self.words)
@@ -45,6 +44,8 @@ class Syntactic(Lexical):
     @functools.cached_property
     def bigram_prob(self):
         return [(big, freq/len(self.bigrams)) for (big, freq) in self.bigram_freq]
+
+    ###### trigrams
 
     @functools.cached_property
     def trigrams(self):

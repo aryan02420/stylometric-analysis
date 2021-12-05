@@ -4,8 +4,6 @@ import functools
 from .constants import *
 from .Basic import Basic
 
-stop_words = nltk.corpus.stopwords.words('english')
-
 
 class Lexical(Basic):
     def __init__(self, label: str, text: str) -> None:
@@ -23,6 +21,7 @@ class Lexical(Basic):
     def type_token_ratio(self):
         return self.num_unique_words / self.num_words
 
+    # all words and tokens
 
     @functools.cached_property
     def token_freq(self):
@@ -48,7 +47,6 @@ class Lexical(Basic):
     def word_prob_dict(self):
         return {word: freq for (word, freq) in self.word_freq}
 
-
     @ functools.cached_property
     def common_words_prob(self):
         return [(word, self.word_prob_dict.get(word, 0)/self.num_words) for word in common_words]
@@ -57,6 +55,7 @@ class Lexical(Basic):
     def common_puncts_prob(self):
         return [(word, self.token_prob_dict.get(word, 0)/self.num_tokens) for word in punct]
 
+    # length of words
 
     @ functools.cached_property
     def word_len(self):
@@ -78,6 +77,7 @@ class Lexical(Basic):
     def av_word_len(self):
         return np.mean(self.word_len)
 
+    # filtered words
 
     @ functools.cached_property
     def filtered_words(self):
@@ -95,6 +95,33 @@ class Lexical(Basic):
     def filtered_word_prob(self):
         return [(word, freq/self.num_filtered_words) for (word, freq) in self.filtered_word_freq]
 
+    @ functools.cached_property
+    def filtered_word_prob_dict(self):
+        return {word: freq for (word, freq) in self.filtered_word_prob}
+
+    # stop words
+
+    @ functools.cached_property
+    def stop_words(self):
+        return [word for word in self.words if word in stop_words]
+
+    @ functools.cached_property
+    def num_stop_words(self):
+        return len(self.stop_words)
+
+    @ functools.cached_property
+    def stop_word_freq(self):
+        return nltk.probability.FreqDist(self.stop_words).most_common()
+
+    @ functools.cached_property
+    def stop_word_prob(self):
+        return [(word, freq/self.num_stop_words) for (word, freq) in self.stop_word_freq]
+
+    @ functools.cached_property
+    def stop_word_prob_dict(self):
+        return {word: freq for (word, freq) in self.stop_word_prob}
+
+    # length of filtered words
 
     @ functools.cached_property
     def filtered_word_len(self):
@@ -116,7 +143,29 @@ class Lexical(Basic):
     def av_filtered_word_len(self):
         return np.mean(self.filtered_word_len)
 
+    # length of stop words
 
+    @ functools.cached_property
+    def stop_word_len(self):
+        return [len(word) for word in self.stop_words]
+
+    @ functools.cached_property
+    def stop_word_len_freq(self):
+        return nltk.probability.FreqDist(self.stop_word_len).most_common()
+
+    @ functools.cached_property
+    def stop_word_len_prob(self):
+        return [(len, freq/self.num_stop_words) for (len, freq) in self.stop_word_len_freq]
+
+    @ functools.cached_property
+    def stop_word_len_prob_dict(self):
+        return {word: freq for (word, freq) in self.stop_word_len_prob}
+
+    @ functools.cached_property
+    def av_stop_word_len(self):
+        return np.mean(self.stop_word_len)
+
+    # sentences
 
     @ functools.cached_property
     def sentences(self):
@@ -142,6 +191,7 @@ class Lexical(Basic):
     def av_words_per_sent(self):
         return np.mean([len(nltk.word_tokenize(sent)) for sent in self.sentences])
 
+    # paragraphs
 
     @ functools.cached_property
     def paragraphs(self):
